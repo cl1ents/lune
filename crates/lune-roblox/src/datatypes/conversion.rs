@@ -105,9 +105,9 @@ impl LuaToDomValue for LuaValue {
                 (LuaValue::String(s), DomType::BinaryString) => {
                     Ok(DomValue::BinaryString(s.as_bytes().to_vec().into()))
                 }
-                (LuaValue::String(s), DomType::SharedString) => {
-                    Ok(DomValue::SharedString(SharedString::new(s.as_bytes().to_vec())))
-                }
+                (LuaValue::String(s), DomType::SharedString) => Ok(DomValue::SharedString(
+                    SharedString::new(s.as_bytes().to_vec()),
+                )),
                 (LuaValue::String(s), DomType::ContentId) => {
                     Ok(DomValue::ContentId(s.to_str()?.to_string().into()))
                 }

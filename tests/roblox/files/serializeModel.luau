@@ -58,7 +58,7 @@ do
 	local meshPart = Instance.new("MeshPart")
 	local SANITY_STRING = "Hello, world!"
 
-	meshPart.PhysicalConfigData = SANITY_STRING
+	(meshPart :: any).PhysicalConfigData = SANITY_STRING
 
 	local serialized = roblox.serializeModel({ meshPart })
 	local deserialized = roblox.deserializeModel(serialized) :: any
