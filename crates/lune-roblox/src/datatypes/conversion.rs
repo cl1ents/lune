@@ -99,9 +99,11 @@ impl LuaToDomValue for LuaValue {
                 (LuaValue::Number(n), DomType::Float64) => Ok(DomValue::Float64(*n)),
                 (LuaValue::Number(n), DomType::Float32) => Ok(DomValue::Float32(*n as f32)),
 
-                (LuaValue::String(s), DomType::String) => {
-                    Ok(DomValue::String(s.to_str()?.to_string()))
-                }
+                (LuaValue::String(s), DomType::String) => unsafe {
+                    Ok(DomValue::String(String::from_utf8_unchecked(
+                        s.as_bytes().to_vec(),
+                    )))
+                },
                 (LuaValue::String(s), DomType::BinaryString) => {
                     Ok(DomValue::BinaryString(s.as_bytes().to_vec().into()))
                 }
@@ -132,7 +134,11 @@ impl LuaToDomValue for LuaValue {
                 LuaValue::Boolean(b) => Ok(DomValue::Bool(*b)),
                 LuaValue::Integer(i) => Ok(DomValue::Int32(*i as i32)),
                 LuaValue::Number(n) => Ok(DomValue::Float64(*n)),
-                LuaValue::String(s) => Ok(DomValue::String(s.to_str()?.to_string())),
+                LuaValue::String(s) => unsafe {
+                    Ok(DomValue::String(String::from_utf8_unchecked(
+                        s.as_bytes().to_vec(),
+                    )))
+                },
                 LuaValue::UserData(u) => u.lua_to_dom_value(lua, None),
                 v => Err(DomConversionError::ToDomValue {
                     to: "unknown",
