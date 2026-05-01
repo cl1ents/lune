@@ -98,10 +98,7 @@ impl LuaToDomValue for LuaValue {
                 (LuaValue::Number(n), DomType::Float64) => Ok(DomValue::Float64(*n)),
                 (LuaValue::Number(n), DomType::Float32) => Ok(DomValue::Float32(*n as f32)),
 
-                (LuaValue::String(s), DomType::String) => {
-                    Ok(DomValue::BinaryString(s.as_bytes().to_vec().into()))
-                }
-                (LuaValue::String(s), DomType::BinaryString) => {
+                (LuaValue::String(s), DomType::String | DomType::BinaryString) => {
                     Ok(DomValue::BinaryString(s.as_bytes().to_vec().into()))
                 }
                 (LuaValue::String(s), DomType::ContentId) => {
